@@ -5,6 +5,8 @@ import NewsDetails from "./NewsDetails";
 import WriteNews from "./WriteNews";
 import SideMenu from "./SideMenu";
 
+import catImg from '../../img/catImg.jpg'
+
 
 const Container = styled.div`
   width: 1010px;
@@ -14,7 +16,7 @@ const Container = styled.div`
   flex-direction: column;
 `
 
-const OfferNews = styled.div`
+const OfferNews = styled.div<{isPosting: boolean}>`
   width: 537px;
   height: 49px;
   border-radius: 12px;
@@ -24,7 +26,7 @@ const OfferNews = styled.div`
   padding-left: 14px;
   padding-right: 14px;
   align-items: center;
-  display: flex;
+  display: ${props => props.isPosting ? 'none' : 'flex'};
   
   img {
     margin-left: auto;
@@ -42,6 +44,10 @@ const OfferNews = styled.div`
     color: #7B809A;
     font-size: 14px;
     margin-left: 13px;
+  }
+  
+  &:hover {
+    cursor: pointer;
   }
 `
 
@@ -67,6 +73,7 @@ const NewsList = styled.div`
 
 const News: React.FC = () => {
     const [openDialog, setOpenDialog] = useState(false)
+    const [isPostingNews, setIsPostingNews] = useState(false)
 
     const handleOpen = () => {
         setOpenDialog(true)
@@ -81,12 +88,15 @@ const News: React.FC = () => {
             <SideMenu />
             <Container>
                 <NewsDetails isOpen={openDialog} close={handleClose}/>
-                {/*<OfferNews>*/}
-                {/*    <img src={catImg}/>*/}
-                {/*    <span>Хотите предложить новость?</span>*/}
-                {/*    <img src={settings}/>*/}
-                {/*</OfferNews>*/}
-                <WriteNews/>
+                <OfferNews isPosting={isPostingNews}
+                           onClick={() => {
+                               setIsPostingNews(true)
+                           }}
+                >
+                    <img src={catImg}/>
+                    <span>Хотите предложить новость?</span>
+                </OfferNews>
+                <WriteNews isPosting={isPostingNews}/>
                 <NewsBlock>
                     <span>Новости</span>
                     <NewsList>

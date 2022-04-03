@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import styled from 'styled-components'
 import Switch from '@mui/material/Switch'
 
@@ -6,6 +6,7 @@ import myAccPic from '../../img/myAccPic.png'
 import avatar from '../../img/avatar.png'
 import editImg from '../../img/editImg.svg'
 import SideMenu from "./SideMenu";
+import EditProfile from "./EditProfile";
 
 const Container = styled.div`
   width: 1010px;
@@ -114,10 +115,14 @@ const TextContainer = styled.div`
   }
 `
 
-const EditProfile = styled.img`
+const EditProfilePic = styled.img`
   position: absolute;
   top: 0;
   right: 0;
+  
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 const GeneralOptions = styled.div`
@@ -158,79 +163,91 @@ const OptionSection = styled.div`
 
 
 const MyAccount: React.FC = () => {
+    const [openDialog, setOpenDialog] = useState(false)
+
+    const handleOpen = () => {
+        setOpenDialog(true)
+    }
+
+    const handleClose = () => {
+        setOpenDialog(false)
+    }
+
     return (
-        <>
-            <SideMenu />
-            <Container>
-                <PictureWrapper/>
-                <PictureContainer src={myAccPic}/>
-                <MainContainer>
-                    <NameContainer>
-                        <Avatar src={avatar}/>
-                        <NameDegreeContainer>
-                            <span>Иванов Иван</span>
-                            <span>Бакалавр</span>
-                        </NameDegreeContainer>
-                    </NameContainer>
-                    <InfoOptionsContainer>
-                        <InfoContainer>
-                            <ProfileInfoContainer>
-                                <ProfileInfoText>Информация профиля</ProfileInfoText>
-                                <EditProfile src={editImg}/>
-                                <TextContainer>
-                                    <RegularText>Люблю футбол, не люблю учебу</RegularText>
-                                </TextContainer>
-                                <TextContainer>
-                                    <BoldText>ФИО: </BoldText>
-                                    <RegularText>Иванов Иван Иванович</RegularText>
-                                </TextContainer>
-                                <TextContainer>
-                                    <BoldText>Школа: </BoldText>
-                                    <RegularText>ИШИТР</RegularText>
-                                </TextContainer>
-                                <TextContainer>
-                                    <BoldText>Группа: </BoldText>
-                                    <RegularText>8К82</RegularText>
-                                </TextContainer>
-                                <TextContainer>
-                                    <BoldText>Общежитие: </BoldText>
-                                    <RegularText>№16</RegularText>
-                                </TextContainer>
-                                <TextContainer>
-                                    <BoldText>Комната: </BoldText>
-                                    <RegularText>666</RegularText>
-                                </TextContainer>
-                            </ProfileInfoContainer>
-                        </InfoContainer>
-                        <GeneralOptions>
-                            <span>Общие настройки</span>
-                            <OptionsSections>
-                                <span>Аккаунт</span>
-                                <OptionSection>
-                                    <Switch size="small" defaultChecked/>
-                                    <span>Получать письмо, если кто-то отмечает меня в чате</span>
-                                </OptionSection>
-                                <OptionSection>
-                                    <Switch size="small" defaultChecked/>
-                                    <span>Получать письмо о новостях моего общежития</span>
-                                </OptionSection>
-                            </OptionsSections>
-                            <OptionsSections>
-                                <span>Приложение</span>
-                                <OptionSection>
-                                    <Switch size="small" defaultChecked/>
-                                    <span>Не выходить из профиля</span>
-                                </OptionSection>
-                                <OptionSection>
-                                    <Switch size="small" defaultChecked/>
-                                    <span>Уведомлять о сообщениях в браузере</span>
-                                </OptionSection>
-                            </OptionsSections>
-                        </GeneralOptions>
-                    </InfoOptionsContainer>
-                </MainContainer>
-            </Container>
-        </>
+        <Container>
+            <PictureWrapper/>
+            <PictureContainer src={myAccPic}/>
+            <MainContainer>
+                <NameContainer>
+                    <Avatar src={avatar}/>
+                    <NameDegreeContainer>
+                        <span>Иванов Иван</span>
+                        <span>Бакалавр</span>
+                    </NameDegreeContainer>
+                </NameContainer>
+                <InfoOptionsContainer>
+                    <InfoContainer>
+                        <ProfileInfoContainer>
+                            <ProfileInfoText>Информация профиля</ProfileInfoText>
+                            <EditProfilePic src={editImg}
+                                         onClick={() => {
+                                             handleOpen()
+                                         }}
+                            />
+                            <TextContainer>
+                                <RegularText>Люблю футбол, не люблю учебу</RegularText>
+                            </TextContainer>
+                            <TextContainer>
+                                <BoldText>ФИО: </BoldText>
+                                <RegularText>Иванов Иван Иванович</RegularText>
+                            </TextContainer>
+                            <TextContainer>
+                                <BoldText>Школа: </BoldText>
+                                <RegularText>ИШИТР</RegularText>
+                            </TextContainer>
+                            <TextContainer>
+                                <BoldText>Группа: </BoldText>
+                                <RegularText>8К82</RegularText>
+                            </TextContainer>
+                            <TextContainer>
+                                <BoldText>Общежитие: </BoldText>
+                                <RegularText>№16</RegularText>
+                            </TextContainer>
+                            <TextContainer>
+                                <BoldText>Комната: </BoldText>
+                                <RegularText>666</RegularText>
+                            </TextContainer>
+                        </ProfileInfoContainer>
+                    </InfoContainer>
+                    <GeneralOptions>
+                        <span>Общие настройки</span>
+                        <OptionsSections>
+                            <span>Аккаунт</span>
+                            <OptionSection>
+                                <Switch size="small" defaultChecked/>
+                                <span>Получать письмо, если кто-то отмечает меня в чате</span>
+                            </OptionSection>
+                            <OptionSection>
+                                <Switch size="small" defaultChecked/>
+                                <span>Получать письмо о новостях моего общежития</span>
+                            </OptionSection>
+                        </OptionsSections>
+                        <OptionsSections>
+                            <span>Приложение</span>
+                            <OptionSection>
+                                <Switch size="small" defaultChecked/>
+                                <span>Не выходить из профиля</span>
+                            </OptionSection>
+                            <OptionSection>
+                                <Switch size="small" defaultChecked/>
+                                <span>Уведомлять о сообщениях в браузере</span>
+                            </OptionSection>
+                        </OptionsSections>
+                    </GeneralOptions>
+                </InfoOptionsContainer>
+                <EditProfile isOpen={openDialog} close={handleClose}/>
+            </MainContainer>
+        </Container>
     )
 }
 

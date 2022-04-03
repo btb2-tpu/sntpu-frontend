@@ -1,6 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 import {Route, Routes} from 'react-router-dom'
+
 import News from './News'
 import MyAccount from "./MyAccount";
 import {LoginPage} from "./Login";
