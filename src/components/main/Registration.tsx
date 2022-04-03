@@ -24,7 +24,7 @@ const Form = styled.div`
   flex-direction: column;
 `
 
-export const LoginPage: React.FC = () => {
+export const RegistrationPage: React.FC = () => {
     const navigate = useNavigate()
     let [username, setUsername] = useState("")
     let [password, setPassword] = useState("")
@@ -40,7 +40,7 @@ export const LoginPage: React.FC = () => {
     }
 
     const onSubmit = (event: FormEvent<HTMLInputElement>) => {
-        instance.post("/auth/login", {
+        instance.post("/auth/register", {
             "username": username,
             "password": password
         }).then( response => {
@@ -49,15 +49,11 @@ export const LoginPage: React.FC = () => {
                     setAuthToken(token)
                     navigate("/")
                 } else {
-                    console.log("Error with auth")
+                    console.log("Error with register and auth")
                 }
             }
         )
         event.preventDefault()
-    }
-
-    const onClickRegistration = () => {
-        navigate("/register")
     }
 
     if (isAuth) {
@@ -67,6 +63,7 @@ export const LoginPage: React.FC = () => {
     return(
         <Container>
             <Form>
+                Регистрация
                 <label>
                     <span>
                         Логин
@@ -80,7 +77,6 @@ export const LoginPage: React.FC = () => {
                     <input type={"text"} value={password} onChange={handleChangePassword}/>
                 </label>
                 <input type={"submit"} onClick={onSubmit}/>
-                <button onClick={onClickRegistration} > Зарегистрироваться </button>
             </Form>
         </Container>
     )

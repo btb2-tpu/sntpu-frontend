@@ -16,7 +16,7 @@ export const clearAndLogout = (): void => {
     window.location.href = "/"
 }
 
-export const apiBaseUrl = "http://localhost:8080/api/v1"
+export const apiBaseUrl = "http://0a08-109-123-185-33.ngrok.io/api/v1"
 
 export const instance = axios.create({ baseURL: apiBaseUrl })
 

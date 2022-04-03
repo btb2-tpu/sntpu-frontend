@@ -5,6 +5,7 @@ import News from './News'
 import MyAccount from "./MyAccount";
 import {LoginPage} from "./Login";
 import {PrivateRoute} from "../auth/PrivateRoute";
+import {RegistrationPage} from "./Registration";
 
 
 const Container = styled.div`
@@ -30,6 +31,7 @@ const Main: React.FC = () => {
             <ContentContainer>
                 <Routes>
                     <Route path="/login" element={<LoginPage/>} />
+                    <Route path="/register" element={<RegistrationPage/>} />
                     <Route
                         path="/"
                         element={<PrivateRoute component={News}/>}
