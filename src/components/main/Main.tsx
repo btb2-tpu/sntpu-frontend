@@ -1,10 +1,10 @@
 import React from 'react'
 import styled from 'styled-components'
-import {BrowserRouter, Route, Routes} from 'react-router-dom'
-
-import SideMenu from './SideMenu'
+import {Route, Routes} from 'react-router-dom'
 import News from './News'
 import MyAccount from "./MyAccount";
+import {LoginPage} from "./Login";
+import {PrivateRoute} from "../auth/PrivateRoute";
 
 
 const Container = styled.div`
@@ -26,15 +26,21 @@ const ContentContainer = styled.div`
 
 const Main: React.FC = () => {
     return (
-            <Container>
-                <ContentContainer>
-                    <SideMenu/>
-                    <Routes>
-                        <Route path="/" element={<News/>}/>
-                        <Route path="myAccount" element={<MyAccount/>}/>
-                    </Routes>
-                </ContentContainer>
-            </Container>
+        <Container>
+            <ContentContainer>
+                <Routes>
+                    <Route path="/login" element={<LoginPage/>} />
+                    <Route
+                        path="/"
+                        element={<PrivateRoute component={News}/>}
+                    />
+                    <Route
+                        path="myAccount"
+                        element={<PrivateRoute component={MyAccount}/>}
+                    />
+                </Routes>
+            </ContentContainer>
+        </Container>
     )
 }
 

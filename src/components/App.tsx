@@ -7,17 +7,17 @@ import Main from './main/Main'
 
 const Container = styled.div`
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 70px);
 `
 
 
 const App: React.FC = () => {
     return (
-            <Container>
-                <Header/>
-                <Main/>
-            </Container>
-)
+        <Container>
+            <Header/>
+            <Main/>
+        </Container>
+    )
 }
 
 export default App;

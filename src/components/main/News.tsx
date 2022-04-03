@@ -1,11 +1,9 @@
 import React, {useState} from 'react'
 import styled from 'styled-components'
-
-import catImg from '../../img/catImg.jpg'
-import settings from '../../img/settings.svg'
 import NewsCard from "./NewsCard";
 import NewsDetails from "./NewsDetails";
 import WriteNews from "./WriteNews";
+import SideMenu from "./SideMenu";
 
 
 const Container = styled.div`
@@ -79,27 +77,30 @@ const News: React.FC = () => {
     }
 
     return (
-        <Container>
-            <NewsDetails isOpen={openDialog} close={handleClose}/>
-            {/*<OfferNews>*/}
-            {/*    <img src={catImg}/>*/}
-            {/*    <span>Хотите предложить новость?</span>*/}
-            {/*    <img src={settings}/>*/}
-            {/*</OfferNews>*/}
-            <WriteNews/>
-            <NewsBlock>
-                <span>Новости</span>
-                <NewsList>
-                    <NewsCard open={handleOpen}/>
-                </NewsList>
-            </NewsBlock>
-            <NewsBlock>
-                Мероприятия
-            </NewsBlock>
-            <NewsBlock>
-                Объявления
-            </NewsBlock>
-        </Container>
+        <>
+            <SideMenu />
+            <Container>
+                <NewsDetails isOpen={openDialog} close={handleClose}/>
+                {/*<OfferNews>*/}
+                {/*    <img src={catImg}/>*/}
+                {/*    <span>Хотите предложить новость?</span>*/}
+                {/*    <img src={settings}/>*/}
+                {/*</OfferNews>*/}
+                <WriteNews/>
+                <NewsBlock>
+                    <span>Новости</span>
+                    <NewsList>
+                        <NewsCard open={handleOpen}/>
+                    </NewsList>
+                </NewsBlock>
+                <NewsBlock>
+                    Мероприятия
+                </NewsBlock>
+                <NewsBlock>
+                    Объявления
+                </NewsBlock>
+            </Container>
+        </>
     )
 }
 
