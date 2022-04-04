@@ -1,12 +1,30 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import Switch from '@mui/material/Switch'
 
 import myAccPic from '../../img/myAccPic.png'
 import avatar from '../../img/avatar.png'
 import editImg from '../../img/editImg.svg'
-import SideMenu from "./SideMenu";
-import EditProfile from "./EditProfile";
+import SideMenu from './SideMenu'
+import EditProfile from './EditProfile'
+import {apiBaseUrl, instance} from "../auth/authModule";
+
+
+export interface data {
+    [key: string]: any
+    firstName: string | null
+    lastName: string | null
+    middleName: string | null
+    description: string | null
+    group: string | null
+    school: string | null
+    avatarUUID: string | null
+    education: string | null
+    dormitory: string | null
+    room: string | null
+    floor: string | null
+    uuid: string | null
+}
 
 const Container = styled.div`
   width: 1010px;
@@ -58,7 +76,8 @@ const NameContainer = styled.div`
 `
 
 const Avatar = styled.img`
-
+  height: 74px;
+  border-radius: 8px;
 `
 
 const NameDegreeContainer = styled.div`
@@ -119,7 +138,7 @@ const EditProfilePic = styled.img`
   position: absolute;
   top: 0;
   right: 0;
-  
+
   &:hover {
     cursor: pointer;
   }
@@ -153,7 +172,7 @@ const OptionSection = styled.div`
   display: flex;
   margin-top: 16px;
   align-items: center;
-  
+
   span {
     font-family: Roboto300, serif;
     font-size: 14px;
@@ -164,6 +183,28 @@ const OptionSection = styled.div`
 
 const MyAccount: React.FC = () => {
     const [openDialog, setOpenDialog] = useState(false)
+    const [data, setData] = useState<data>({
+        firstName: null,
+        lastName: null,
+        middleName: null,
+        description: null,
+        group: null,
+        school: null,
+        avatarUUID: null,
+        education: null,
+        dormitory: null,
+        room: null,
+        floor: null,
+        uuid: null
+    })
+
+    useEffect(() => {
+        instance.get('/user')
+            .then((response) => {
+                setData(response.data)
+                console.log(response.data)
+            })
+    }, [])
 
     const handleOpen = () => {
         setOpenDialog(true)
@@ -173,81 +214,100 @@ const MyAccount: React.FC = () => {
         setOpenDialog(false)
     }
 
-    return (
-        <Container>
-            <PictureWrapper/>
-            <PictureContainer src={myAccPic}/>
-            <MainContainer>
-                <NameContainer>
-                    <Avatar src={avatar}/>
-                    <NameDegreeContainer>
-                        <span>Иванов Иван</span>
-                        <span>Бакалавр</span>
-                    </NameDegreeContainer>
-                </NameContainer>
-                <InfoOptionsContainer>
-                    <InfoContainer>
-                        <ProfileInfoContainer>
-                            <ProfileInfoText>Информация профиля</ProfileInfoText>
-                            <EditProfilePic src={editImg}
-                                         onClick={() => {
-                                             handleOpen()
-                                         }}
-                            />
-                            <TextContainer>
-                                <RegularText>Люблю футбол, не люблю учебу</RegularText>
-                            </TextContainer>
-                            <TextContainer>
-                                <BoldText>ФИО: </BoldText>
-                                <RegularText>Иванов Иван Иванович</RegularText>
-                            </TextContainer>
-                            <TextContainer>
-                                <BoldText>Школа: </BoldText>
-                                <RegularText>ИШИТР</RegularText>
-                            </TextContainer>
-                            <TextContainer>
-                                <BoldText>Группа: </BoldText>
-                                <RegularText>8К82</RegularText>
-                            </TextContainer>
-                            <TextContainer>
-                                <BoldText>Общежитие: </BoldText>
-                                <RegularText>№16</RegularText>
-                            </TextContainer>
-                            <TextContainer>
-                                <BoldText>Комната: </BoldText>
-                                <RegularText>666</RegularText>
-                            </TextContainer>
-                        </ProfileInfoContainer>
-                    </InfoContainer>
-                    <GeneralOptions>
-                        <span>Общие настройки</span>
-                        <OptionsSections>
-                            <span>Аккаунт</span>
-                            <OptionSection>
-                                <Switch size="small" defaultChecked/>
-                                <span>Получать письмо, если кто-то отмечает меня в чате</span>
-                            </OptionSection>
-                            <OptionSection>
-                                <Switch size="small" defaultChecked/>
-                                <span>Получать письмо о новостях моего общежития</span>
-                            </OptionSection>
-                        </OptionsSections>
-                        <OptionsSections>
-                            <span>Приложение</span>
-                            <OptionSection>
-                                <Switch size="small" defaultChecked/>
-                                <span>Не выходить из профиля</span>
-                            </OptionSection>
-                            <OptionSection>
-                                <Switch size="small" defaultChecked/>
-                                <span>Уведомлять о сообщениях в браузере</span>
-                            </OptionSection>
-                        </OptionsSections>
-                    </GeneralOptions>
-                </InfoOptionsContainer>
-                <EditProfile isOpen={openDialog} close={handleClose}/>
-            </MainContainer>
-        </Container>
+    const getAvatar = () => {
+        if (data.avatarUUID === null) {
+            return avatar
+        } else return `${apiBaseUrl}/upload/${data.avatarUUID}`
+    }
+
+    if (data.description === null) {
+        return (
+            <div>
+                Загрузка, ждите
+            </div>
+        )
+    } else return (
+        <>
+            <SideMenu/>
+            <Container>
+                <PictureWrapper/>
+                <PictureContainer src={myAccPic}/>
+                <MainContainer>
+                    <NameContainer>
+                        <Avatar src={getAvatar()}/>
+                        <NameDegreeContainer>
+                            <span>{data.lastName + ' ' + data.firstName}</span>
+                            <span>{data.education}</span>
+                        </NameDegreeContainer>
+                    </NameContainer>
+                    <InfoOptionsContainer>
+                        <InfoContainer>
+                            <ProfileInfoContainer>
+                                <ProfileInfoText>Информация профиля</ProfileInfoText>
+                                <EditProfilePic src={editImg}
+                                                onClick={() => {
+                                                    handleOpen()
+                                                }}
+                                />
+                                <TextContainer>
+                                    <RegularText>{data.description === null ? 'Информация о себе' : data.description}</RegularText>
+                                </TextContainer>
+                                <TextContainer>
+                                    <BoldText>ФИО: </BoldText>
+                                    <RegularText>{data.lastName + ' ' + data.firstName + ' ' + data.middleName}</RegularText>
+                                </TextContainer>
+                                <TextContainer>
+                                    <BoldText>Школа: </BoldText>
+                                    <RegularText>{data.school}</RegularText>
+                                </TextContainer>
+                                <TextContainer>
+                                    <BoldText>Группа: </BoldText>
+                                    <RegularText>{data.group}</RegularText>
+                                </TextContainer>
+                                <TextContainer>
+                                    <BoldText>Общежитие: </BoldText>
+                                    <RegularText>{data.dormitory}</RegularText>
+                                </TextContainer>
+                                <TextContainer>
+                                    <BoldText>Этаж: </BoldText>
+                                    <RegularText>{data.floor}</RegularText>
+                                </TextContainer>
+                                <TextContainer>
+                                    <BoldText>Комната: </BoldText>
+                                    <RegularText>{data.room}</RegularText>
+                                </TextContainer>
+                            </ProfileInfoContainer>
+                        </InfoContainer>
+                        <GeneralOptions>
+                            <span>Общие настройки</span>
+                            <OptionsSections>
+                                <span>Аккаунт</span>
+                                <OptionSection>
+                                    <Switch size="small" defaultChecked/>
+                                    <span>Получать письмо, если кто-то отмечает меня в чате</span>
+                                </OptionSection>
+                                <OptionSection>
+                                    <Switch size="small" defaultChecked/>
+                                    <span>Получать письмо о новостях моего общежития</span>
+                                </OptionSection>
+                            </OptionsSections>
+                            <OptionsSections>
+                                <span>Приложение</span>
+                                <OptionSection>
+                                    <Switch size="small" defaultChecked/>
+                                    <span>Не выходить из профиля</span>
+                                </OptionSection>
+                                <OptionSection>
+                                    <Switch size="small" defaultChecked/>
+                                    <span>Уведомлять о сообщениях в браузере</span>
+                                </OptionSection>
+                            </OptionsSections>
+                        </GeneralOptions>
+                    </InfoOptionsContainer>
+                    <EditProfile isOpen={openDialog} close={handleClose} data={data}/>
+                </MainContainer>
+            </Container>
+        </>
     )
 }
 

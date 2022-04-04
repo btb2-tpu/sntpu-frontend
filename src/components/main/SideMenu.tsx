@@ -1,10 +1,13 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import styled from 'styled-components'
 
 import catImg from '../../img/catImg.jpg'
 import dashboard from '../../img/dashboard.svg'
 import chat from '../../img/chat.svg'
 import {useNavigate} from "react-router-dom";
+import {observer} from "mobx-react-lite";
+import Store from "../../store/Store";
+import {toJS} from "mobx";
 
 
 const Container = styled.div`
@@ -132,7 +135,10 @@ const Chat = styled.div`
   }
 `
 
-const SideMenu: React.FC = () => {
+const SideMenu: React.FC = observer(() => {
+    useEffect(() => {
+        console.log(toJS(Store.downloadedData))
+    }, [])
     const navigate = useNavigate()
 
     return (
@@ -179,6 +185,6 @@ const SideMenu: React.FC = () => {
             </ChatsContainer>
         </Container>
     )
-}
+})
 
 export default SideMenu

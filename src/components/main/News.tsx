@@ -85,7 +85,7 @@ const News: React.FC = () => {
 
     return (
         <>
-            <SideMenu />
+            <SideMenu/>
             <Container>
                 <NewsDetails isOpen={openDialog} close={handleClose}/>
                 <OfferNews isPosting={isPostingNews}

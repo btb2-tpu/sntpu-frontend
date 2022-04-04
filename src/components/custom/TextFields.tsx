@@ -20,3 +20,11 @@ export const NewsText = styled(TextField, {})({
         fontSize: 14
     },
 })
+
+export const EditProfileText = styled(TextField, {})({
+    marginLeft: 10,
+    ".MuiFormLabel-root": {
+        color: '#7B809A',
+        fontSize: 14
+    },
+})

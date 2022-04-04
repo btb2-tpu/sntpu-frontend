@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import styled from 'styled-components'
 import {Route, Routes} from 'react-router-dom'
 
@@ -7,6 +7,7 @@ import MyAccount from "./MyAccount";
 import {LoginPage} from "./Login";
 import {PrivateRoute} from "../auth/PrivateRoute";
 import {RegistrationPage} from "./Registration";
+import Store from '../../store/Store'
 
 
 const Container = styled.div`
@@ -27,6 +28,10 @@ const ContentContainer = styled.div`
 `
 
 const Main: React.FC = () => {
+    useEffect(() => {
+        Store.downloadData()
+    }, [])
+
     return (
         <Container>
             <ContentContainer>
