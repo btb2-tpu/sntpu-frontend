@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components'
 import NewsCard from "./NewsCard";
 import NewsDetails from "./NewsDetails";
@@ -6,6 +6,7 @@ import WriteNews from "./WriteNews";
 import SideMenu from "./SideMenu";
 
 import catImg from '../../img/catImg.jpg'
+import {instance} from "../auth/authModule";
 
 
 const Container = styled.div`
@@ -27,10 +28,10 @@ const OfferNews = styled.div<{isPosting: boolean}>`
   padding-right: 14px;
   align-items: center;
   display: ${props => props.isPosting ? 'none' : 'flex'};
-  
+
   img {
     margin-left: auto;
-    
+
     &:first-child {
       width: 32px;
       height: 32px;
@@ -38,14 +39,14 @@ const OfferNews = styled.div<{isPosting: boolean}>`
       margin-left: inherit;
     }
   }
-  
+
   span {
     font-family: Roboto300, serif;
     color: #7B809A;
     font-size: 14px;
     margin-left: 13px;
   }
-  
+
   &:hover {
     cursor: pointer;
   }
@@ -71,6 +72,17 @@ const NewsList = styled.div`
   display: flex;
 `
 
+export class Event {
+    [key: string]: string;
+    uuid: string = ""
+    type: string = ""
+    creationDate: string = ""
+    expirationDate: string = ""
+    header: string = ""
+    description: string = ""
+    avatarUUID: string = ""
+}
+
 const News: React.FC = () => {
     const [openDialog, setOpenDialog] = useState(false)
     const [isPostingNews, setIsPostingNews] = useState(false)
@@ -82,6 +94,15 @@ const News: React.FC = () => {
     const handleClose = () => {
         setOpenDialog(false)
     }
+
+    useEffect(() => {
+        instance
+            .get("/event")
+            .then( response => {
+                    console.log(response.data)
+                }
+            )
+    }, [])
 
     return (
         <>
@@ -100,7 +121,7 @@ const News: React.FC = () => {
                 <NewsBlock>
                     <span>Новости</span>
                     <NewsList>
-                        <NewsCard open={handleOpen}/>
+
                     </NewsList>
                 </NewsBlock>
                 <NewsBlock>

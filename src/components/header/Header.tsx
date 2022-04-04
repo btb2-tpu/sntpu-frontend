@@ -5,6 +5,7 @@ import {useNavigate} from 'react-router-dom'
 import bell from '../../img/bell.svg'
 import profile from '../../img/profile.svg'
 import settings from '../../img/settings.svg'
+import {clearAndLogout} from "../auth/authModule";
 
 
 const HeaderComponent = styled.div`
@@ -42,7 +43,9 @@ const Header: React.FC = () => {
                      onClick={() => {
                          navigate('/myAccount')
                      }}/>
-                <img src={settings}/>
+                <img src={settings} onClick={() => {
+                    clearAndLogout()
+                }}/>
                 <img src={bell}/>
             </IconsContainer>
         </HeaderComponent>

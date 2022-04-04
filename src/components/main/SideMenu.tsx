@@ -1,13 +1,13 @@
 import React, {useEffect} from 'react'
 import styled from 'styled-components'
 
-import catImg from '../../img/catImg.jpg'
 import dashboard from '../../img/dashboard.svg'
 import chat from '../../img/chat.svg'
 import {useNavigate} from "react-router-dom";
-import {observer} from "mobx-react-lite";
-import Store from "../../store/Store";
-import {toJS} from "mobx";
+import {useRecoilState} from "recoil";
+import {userState} from "./Main";
+import avatar from "../../img/avatar.png";
+import {apiBaseUrl} from "../auth/authModule";
 
 
 const Container = styled.div`
@@ -135,11 +135,15 @@ const Chat = styled.div`
   }
 `
 
-const SideMenu: React.FC = observer(() => {
-    useEffect(() => {
-        console.log(toJS(Store.downloadedData))
-    }, [])
+const SideMenu: React.FC = () => {
     const navigate = useNavigate()
+    const [user, setUser] = useRecoilState(userState)
+
+    const getAvatar = () => {
+        if (user.avatarUUID === null) {
+            return avatar
+        } else return `${apiBaseUrl}/upload/${user.avatarUUID}`
+    }
 
     return (
         <Container>
@@ -148,8 +152,8 @@ const SideMenu: React.FC = observer(() => {
             </LogoContainer>
             <DividingLine/>
             <ProfileContainer>
-                <img src={catImg}/>
-                <span>Иванов Иван</span>
+                <img src={getAvatar()}/>
+                <span>{`${user.lastName} ${user.firstName}`}</span>
             </ProfileContainer>
             <DividingLine/>
             <SchemaNewsContainer>
@@ -185,6 +189,6 @@ const SideMenu: React.FC = observer(() => {
             </ChatsContainer>
         </Container>
     )
-})
+}
 
 export default SideMenu

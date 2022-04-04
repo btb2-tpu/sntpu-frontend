@@ -8,23 +8,8 @@ import editImg from '../../img/editImg.svg'
 import SideMenu from './SideMenu'
 import EditProfile from './EditProfile'
 import {apiBaseUrl, instance} from "../auth/authModule";
-
-
-export interface data {
-    [key: string]: any
-    firstName: string | null
-    lastName: string | null
-    middleName: string | null
-    description: string | null
-    group: string | null
-    school: string | null
-    avatarUUID: string | null
-    education: string | null
-    dormitory: string | null
-    room: string | null
-    floor: string | null
-    uuid: string | null
-}
+import {IUser, userState} from "./Main";
+import {useRecoilState} from "recoil";
 
 const Container = styled.div`
   width: 1010px;
@@ -183,28 +168,7 @@ const OptionSection = styled.div`
 
 const MyAccount: React.FC = () => {
     const [openDialog, setOpenDialog] = useState(false)
-    const [data, setData] = useState<data>({
-        firstName: null,
-        lastName: null,
-        middleName: null,
-        description: null,
-        group: null,
-        school: null,
-        avatarUUID: null,
-        education: null,
-        dormitory: null,
-        room: null,
-        floor: null,
-        uuid: null
-    })
-
-    useEffect(() => {
-        instance.get('/user')
-            .then((response) => {
-                setData(response.data)
-                console.log(response.data)
-            })
-    }, [])
+    const [user, setUser] = useRecoilState(userState)
 
     const handleOpen = () => {
         setOpenDialog(true)
@@ -215,12 +179,12 @@ const MyAccount: React.FC = () => {
     }
 
     const getAvatar = () => {
-        if (data.avatarUUID === null) {
+        if (user.avatarUUID === null) {
             return avatar
-        } else return `${apiBaseUrl}/upload/${data.avatarUUID}`
+        } else return `${apiBaseUrl}/upload/${user.avatarUUID}`
     }
 
-    if (data.description === null) {
+    if (user.description === null) {
         return (
             <div>
                 Загрузка, ждите
@@ -236,8 +200,8 @@ const MyAccount: React.FC = () => {
                     <NameContainer>
                         <Avatar src={getAvatar()}/>
                         <NameDegreeContainer>
-                            <span>{data.lastName + ' ' + data.firstName}</span>
-                            <span>{data.education}</span>
+                            <span>{user.lastName + ' ' + user.firstName}</span>
+                            <span>{user.education}</span>
                         </NameDegreeContainer>
                     </NameContainer>
                     <InfoOptionsContainer>
@@ -250,31 +214,31 @@ const MyAccount: React.FC = () => {
                                                 }}
                                 />
                                 <TextContainer>
-                                    <RegularText>{data.description === null ? 'Информация о себе' : data.description}</RegularText>
+                                    <RegularText>{user.description === null ? 'Информация о себе' : user.description}</RegularText>
                                 </TextContainer>
                                 <TextContainer>
                                     <BoldText>ФИО: </BoldText>
-                                    <RegularText>{data.lastName + ' ' + data.firstName + ' ' + data.middleName}</RegularText>
+                                    <RegularText>{user.lastName + ' ' + user.firstName + ' ' + user.middleName}</RegularText>
                                 </TextContainer>
                                 <TextContainer>
                                     <BoldText>Школа: </BoldText>
-                                    <RegularText>{data.school}</RegularText>
+                                    <RegularText>{user.school}</RegularText>
                                 </TextContainer>
                                 <TextContainer>
                                     <BoldText>Группа: </BoldText>
-                                    <RegularText>{data.group}</RegularText>
+                                    <RegularText>{user.group}</RegularText>
                                 </TextContainer>
                                 <TextContainer>
                                     <BoldText>Общежитие: </BoldText>
-                                    <RegularText>{data.dormitory}</RegularText>
+                                    <RegularText>{user.dormitory}</RegularText>
                                 </TextContainer>
                                 <TextContainer>
                                     <BoldText>Этаж: </BoldText>
-                                    <RegularText>{data.floor}</RegularText>
+                                    <RegularText>{user.floor}</RegularText>
                                 </TextContainer>
                                 <TextContainer>
                                     <BoldText>Комната: </BoldText>
-                                    <RegularText>{data.room}</RegularText>
+                                    <RegularText>{user.room}</RegularText>
                                 </TextContainer>
                             </ProfileInfoContainer>
                         </InfoContainer>
@@ -304,7 +268,7 @@ const MyAccount: React.FC = () => {
                             </OptionsSections>
                         </GeneralOptions>
                     </InfoOptionsContainer>
-                    <EditProfile isOpen={openDialog} close={handleClose} data={data}/>
+                    <EditProfile isOpen={openDialog} close={handleClose} data={user}/>
                 </MainContainer>
             </Container>
         </>

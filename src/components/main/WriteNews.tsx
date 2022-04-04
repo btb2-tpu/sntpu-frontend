@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {ChangeEvent, useState} from 'react'
 import styled from 'styled-components'
 import {Input, IconButton, MenuItem} from "@mui/material";
 
@@ -8,6 +8,7 @@ import send from '../../img/send.png'
 import {HeaderText, NewsText} from '../custom/TextFields'
 import {CustomInput, CustomInputLabel, CustomSelect} from '../custom/Selects'
 import {FormControl} from '@mui/material'
+import {Event} from "./News";
 
 
 interface IProps {
@@ -62,22 +63,37 @@ const PostNews = styled.img`
 `
 
 const WriteNews: React.FC<IProps> = ({isPosting}) => {
-    const [NewsImage, setNewsImage] = useState<File | null>(null)
-    const [chosenCategory, setChosenCategory] = useState<string>('')
+    let [event, setEvent] = useState(new Event())
+
+    const handleSubmit = () => {
+
+    }
+
+    const onChange = (event: ChangeEvent<any>) => {
+        let newEvent = Object.assign({}, event)
+    }
+
+    const uploadImg = (file: File) => {
+
+    }
 
     return (
         <Container isPosting={isPosting}>
             <Avatar src={avatar}/>
             <InputsContainer>
-                <HeaderText id='header-text'
+                <HeaderText id='header'
                             label='Напишите заголовок'
                             variant='standard'
+                            value={event.header}
+                            onChange={onChange}
                 />
-                <NewsText id='news-text'
+                <NewsText id='description'
                           label='Описание'
                           multiline
                           maxRows={7}
-                          variant='standard'/>
+                          variant='standard'
+                          value={event.description}
+                />
             </InputsContainer>
             <Options>
                 <FormControl variant='standard'>
@@ -86,6 +102,7 @@ const WriteNews: React.FC<IProps> = ({isPosting}) => {
                         labelId='category-label'
                         id='category'
                         label='Категория'
+                        value={event.type}
                     >
                         <MenuItem value='news'>Новости</MenuItem>
                         <MenuItem value='events'>Мероприятия</MenuItem>
@@ -104,9 +121,8 @@ const WriteNews: React.FC<IProps> = ({isPosting}) => {
                                  id="icon-button-file"
                                  type="file"
                                  onChange={e => {
-                                     if(e.target.files !== null)
-                                     {
-                                         setNewsImage(e.target.files[0])
+                                     if(e.target.files !== null) {
+                                        uploadImg(e.target.files[0])
                                      }
                                  }}
                     />

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 
 import Header from './header/Header'
 import Main from './main/Main'
+import {RecoilRoot} from "recoil";
 
 
 const Container = styled.div`
@@ -13,10 +14,12 @@ const Container = styled.div`
 
 const App: React.FC = () => {
     return (
-        <Container>
-            <Header/>
-            <Main/>
-        </Container>
+        <RecoilRoot>
+            <Container>
+                <Header/>
+                <Main/>
+            </Container>
+        </RecoilRoot>
     )
 }
 

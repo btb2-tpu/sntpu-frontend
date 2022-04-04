@@ -6,14 +6,15 @@ import {EditProfileText} from '../custom/TextFields'
 import {CustomInput} from "../custom/Selects";
 import {IconButton} from "@mui/material";
 import choosePic from '../../img/choosePic.svg'
-import {data} from './MyAccount'
 import {instance} from "../auth/authModule";
+import {IUser, userState} from "./Main";
+import {useRecoilState} from "recoil";
 
 
 export interface IProps {
     isOpen: boolean
     close: Function
-    data: data
+    data: IUser
 }
 
 const Container = styled.div`
@@ -65,7 +66,7 @@ const SaveButton = styled.div`
 
 const EditProfile: React.FC<IProps> = ({isOpen, close, data}) => {
     const [avatar, setAvatar] = useState<File | null>(null)
-    const [dataToEdit, setDataToEdit] = useState<data>(data)
+    const [dataToEdit, setDataToEdit] = useRecoilState(userState)
 
     useEffect(() => {
         if (data.firstName !== '') {
@@ -74,7 +75,7 @@ const EditProfile: React.FC<IProps> = ({isOpen, close, data}) => {
     }, [])
 
     const onChangeTextField = (event: React.ChangeEvent<HTMLInputElement>) => {
-        let newData: data = Object.assign({}, dataToEdit)
+        let newData: IUser = Object.assign({}, dataToEdit)
         if (event.target.value !== null) {
             newData[event.target.id] = event.target.value
         }
@@ -91,7 +92,7 @@ const EditProfile: React.FC<IProps> = ({isOpen, close, data}) => {
                 }
             })
                 .then(response => {
-                    let newData: data = Object.assign({}, dataToEdit)
+                    let newData: IUser = Object.assign({}, dataToEdit)
                     newData.avatarUUID = response.data.uuid
                     instance.put('/user', newData)
                         .then(() => {
