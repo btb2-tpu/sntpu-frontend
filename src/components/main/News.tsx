@@ -7,6 +7,9 @@ import SideMenu from "./SideMenu";
 
 import catImg from '../../img/catImg.jpg'
 import {instance} from "../auth/authModule";
+import {useRecoilState} from "recoil";
+import {eventState} from "../../model/State";
+import {IEvent} from "../../model/types/IEvent";
 
 
 const Container = styled.div`
@@ -72,34 +75,24 @@ const NewsList = styled.div`
   display: flex;
 `
 
-export class Event {
-    [key: string]: string;
-    uuid: string = ""
-    type: string = ""
-    creationDate: string = ""
-    expirationDate: string = ""
-    header: string = ""
-    description: string = ""
-    avatarUUID: string = ""
-}
-
 const News: React.FC = () => {
-    const [openDialog, setOpenDialog] = useState(false)
     const [isPostingNews, setIsPostingNews] = useState(false)
+    const [events, SetEvents] = useRecoilState(eventState)
+    const [selected, SetSelected] = useState<IEvent | null>( null)
 
-    const handleOpen = () => {
-        setOpenDialog(true)
+    const handleOpen = (data: IEvent) => {
+        SetSelected(data)
     }
 
     const handleClose = () => {
-        setOpenDialog(false)
+        SetSelected(null)
     }
 
     useEffect(() => {
         instance
             .get("/event")
             .then( response => {
-                    console.log(response.data)
+                    SetEvents(response.data)
                 }
             )
     }, [])
@@ -108,7 +101,9 @@ const News: React.FC = () => {
         <>
             <SideMenu/>
             <Container>
-                <NewsDetails isOpen={openDialog} close={handleClose}/>
+                {
+                    selected != null && <NewsDetails data={selected} close={handleClose}/>
+                }
                 <OfferNews isPosting={isPostingNews}
                            onClick={() => {
                                setIsPostingNews(true)
@@ -121,14 +116,26 @@ const News: React.FC = () => {
                 <NewsBlock>
                     <span>Новости</span>
                     <NewsList>
-
+                        { events.slice(0, 3).filter((element) => element.type == "news").map((data) => {
+                            return <NewsCard key={data.uuid} open={() => {handleOpen(data)}} data={data} />
+                        }) }
                     </NewsList>
                 </NewsBlock>
                 <NewsBlock>
-                    Мероприятия
+                    <span>Мероприятия</span>
+                    <NewsList>
+                        { events.slice(0, 3).filter((element) => element.type == "events").map((data) => {
+                            return <NewsCard key={data.uuid} open={() => {handleOpen(data)}} data={data} />
+                        }) }
+                    </NewsList>
                 </NewsBlock>
                 <NewsBlock>
-                    Объявления
+                    <span>Объявления</span>
+                    <NewsList>
+                        { events.slice(0, 3).filter((element) => element.type == "announcements").map((data) => {
+                            return <NewsCard key={data.uuid} open={() => {handleOpen(data)}} data={data} />
+                        }) }
+                    </NewsList>
                 </NewsBlock>
             </Container>
         </>

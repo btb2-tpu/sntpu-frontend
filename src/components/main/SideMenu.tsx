@@ -5,9 +5,9 @@ import dashboard from '../../img/dashboard.svg'
 import chat from '../../img/chat.svg'
 import {useNavigate} from "react-router-dom";
 import {useRecoilState} from "recoil";
-import {userState} from "./Main";
 import avatar from "../../img/avatar.png";
 import {apiBaseUrl} from "../auth/authModule";
+import {userState} from "../../model/State";
 
 
 const Container = styled.div`

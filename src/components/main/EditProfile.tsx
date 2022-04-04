@@ -7,8 +7,9 @@ import {CustomInput} from "../custom/Selects";
 import {IconButton} from "@mui/material";
 import choosePic from '../../img/choosePic.svg'
 import {instance} from "../auth/authModule";
-import {IUser, userState} from "./Main";
 import {useRecoilState} from "recoil";
+import {IUser} from "../../model/types/User";
+import {userState} from "../../model/State";
 
 
 export interface IProps {

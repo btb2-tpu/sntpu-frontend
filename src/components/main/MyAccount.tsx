@@ -8,8 +8,8 @@ import editImg from '../../img/editImg.svg'
 import SideMenu from './SideMenu'
 import EditProfile from './EditProfile'
 import {apiBaseUrl, instance} from "../auth/authModule";
-import {IUser, userState} from "./Main";
 import {useRecoilState} from "recoil";
+import {userState} from "../../model/State";
 
 const Container = styled.div`
   width: 1010px;

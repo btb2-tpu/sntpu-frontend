@@ -6,9 +6,10 @@ import News from './News'
 import {LoginPage} from "./Login";
 import {PrivateRoute} from "../auth/PrivateRoute";
 import {RegistrationPage} from "./Registration";
-import {atom, useRecoilState} from "recoil";
+import {useRecoilState} from "recoil";
 import {instance} from "../auth/authModule";
 import MyAccount from "./MyAccount";
+import {userState} from "../../model/State";
 
 
 const Container = styled.div`
@@ -27,28 +28,6 @@ const ContentContainer = styled.div`
   display: flex;
   justify-content: center;
 `
-
-
-export interface IUser {
-    [key: string]: any
-    firstName: string | null
-    lastName: string | null
-    middleName: string | null
-    description: string | null
-    group: string | null
-    school: string | null
-    avatarUUID: string | null
-    education: string | null
-    dormitory: string | null
-    room: string | null
-    floor: string | null
-    uuid: string | null
-}
-
-export const userState = atom({
-    key: "user",
-    default: {} as IUser,
-})
 
 const Main: React.FC = () => {
 

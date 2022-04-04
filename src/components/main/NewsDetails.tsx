@@ -3,9 +3,12 @@ import styled from 'styled-components'
 import Dialog from '@mui/material/Dialog'
 
 import travkabig from '../../img/travkaBig.png'
+import {IEvent} from "../../model/types/IEvent";
+import avatar from "../../img/avatar.png";
+import {apiBaseUrl} from "../auth/authModule";
 
 export interface IProps {
-    isOpen: boolean;
+    data: IEvent
     close: Function;
 }
 
@@ -48,10 +51,16 @@ const PictureContainer = styled.img`
   margin-top: 15px;
 `
 
-const NewsDetails: React.FC<IProps> = ({isOpen, close}) => {
+const NewsDetails: React.FC<IProps> = ({data, close}) => {
+
+    const getAvatar = () => {
+        if (data.avatarUUID === null) {
+            return avatar
+        } else return `${apiBaseUrl}/upload/${data.avatarUUID}`
+    }
 
     return (
-        <Dialog open={isOpen}
+        <Dialog open={true}
                 maxWidth={false}
                 onClose={() => {
                     close()
@@ -63,17 +72,12 @@ const NewsDetails: React.FC<IProps> = ({isOpen, close}) => {
                     <span>Сегодня в 18:00</span>
                 </TimeAuditoryContainer>
                 <h2>
-                    Дезинсекция 24.04
+                    { data.header }
                 </h2>
                 <NewsTextContainer>
-                    В общежитии №16 (ул. Вершинина д. 46) 24 апреля будет проведена дезинсекция. <br/>Начало в 10:00.
-                    Требуется подготовить комнату:<br/> Продукты, посуда и средства гигиены убраны в шкафы <br/>
-                    ✅ Мебель отодвинута от стен на небольшое расстояние <br/>
-                    ✅ Пространство под кроватями и столами освобождено <br/>
-                    ✅ Уборка комнаты полностью проведена <br/>
-                    ✅ Матрасы и ковры скручены <br/>
+                    {data.description}
                 </NewsTextContainer>
-                <PictureContainer src={travkabig}/>
+                <PictureContainer src={getAvatar()}/>
             </Container>
         </Dialog>
     )

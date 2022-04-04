@@ -2,9 +2,13 @@ import React, {useState} from 'react'
 import styled from 'styled-components'
 
 import travka from '../../img/travka.png'
+import {IEvent} from "../../model/types/IEvent";
+import avatar from "../../img/avatar.png";
+import {apiBaseUrl} from "../auth/authModule";
 
 
 interface IProps {
+    data: IEvent,
     open: Function;
 }
 
@@ -66,13 +70,18 @@ const ReadButton = styled.div`
   }
 `
 
-const NewsCard: React.FC<IProps> = ({open}) => {
+const NewsCard: React.FC<IProps> = ({open, data}) => {
+    const getAvatar = () => {
+        if (data.avatarUUID === null) {
+            return avatar
+        } else return `${apiBaseUrl}/upload/${data.avatarUUID}`
+    }
+
     return(
         <Container>
-            <PictureContainer src={travka}/>
-            <span>Общежитие №16</span>
-            <h4>Дезинсекция 24.04</h4>
-            <span>Требуется подготовить комнаты</span>
+            <PictureContainer src={getAvatar()}/>
+            <h4>{data.header}</h4>
+            <span>{data.description.slice(0, 30) + "..."}</span>
             <ReadButton onClick={() => {open()}}>
                 <span>Прочитать</span>
             </ReadButton>
