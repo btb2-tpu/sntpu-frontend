@@ -1,6 +1,7 @@
 import {Navigate} from 'react-router-dom'
-import React from "react";
-import {isAuthenticated} from "./authModule";
+import React from 'react'
+
+import {isAuthenticated} from './authModule'
 
 interface Props {
     component: React.ComponentType

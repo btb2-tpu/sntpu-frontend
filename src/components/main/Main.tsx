@@ -30,7 +30,6 @@ const ContentContainer = styled.div`
 `
 
 const Main: React.FC = () => {
-
     const [user, setUserState] = useRecoilState(userState)
 
     useEffect(() => {

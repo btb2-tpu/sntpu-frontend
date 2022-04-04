@@ -215,6 +215,7 @@ const EditProfile: React.FC<IProps> = ({isOpen, close, data}) => {
                     </LineContainer>
                     <SaveButton onClick={() => {
                         sendDataToServer()
+                        close()
                     }}>
                         <span>Сохранить</span>
                     </SaveButton>

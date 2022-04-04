@@ -1,7 +1,8 @@
-import React, {ChangeEvent, FormEvent, useState} from "react";
-import styled from "styled-components";
-import {Navigate, useNavigate} from "react-router-dom";
-import {instance, isAuthenticated, setAuthToken} from "../auth/authModule";
+import React, {ChangeEvent, FormEvent, useState} from 'react'
+import styled from 'styled-components'
+import {Navigate, useNavigate} from 'react-router-dom'
+import {instance, isAuthenticated, setAuthToken} from '../auth/authModule'
+import {TextField} from '@mui/material'
 
 const Container = styled.div`
   width: 100%;
@@ -22,6 +23,41 @@ const Form = styled.div`
   display: flex;
   align-items: center;
   flex-direction: column;
+`
+
+const RegisterButton = styled.div`
+  display: flex;
+  height: 25px;
+  border: 1px solid #6FA53B;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+
+  span {
+    margin: 0;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+`
+
+const LoginButton = styled.input`
+  display: flex;
+  height: 25px;
+  border: 1px solid #6FA53B;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  margin-top: 20px;
+
+  span {
+    margin: 0;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 export const LoginPage: React.FC = () => {
@@ -68,19 +104,13 @@ export const LoginPage: React.FC = () => {
         <Container>
             <Form>
                 <label>
-                    <span>
-                        Логин
-                    </span>
-                    <input type={"text"} value={username} onChange={handleChangeUsername}/>
+                    <TextField variant='standard' label='Логин' type={"text"} value={username} onChange={handleChangeUsername}/>
                 </label>
                 <label>
-                    <span>
-                        Пароль
-                    </span>
-                    <input type={"text"} value={password} onChange={handleChangePassword}/>
+                    <TextField variant='standard' label='Пароль' type={"text"} value={password} onChange={handleChangePassword}/>
                 </label>
-                <input type={"submit"} onClick={onSubmit}/>
-                <button onClick={onClickRegistration} > Зарегистрироваться </button>
+                <LoginButton type={"submit"} onClick={onSubmit}/>
+                <RegisterButton onClick={onClickRegistration} >Зарегистрироваться</RegisterButton>
             </Form>
         </Container>
     )

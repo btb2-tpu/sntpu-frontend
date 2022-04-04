@@ -7,10 +7,10 @@ import choosePic from '../../img/choosePic.svg'
 import send from '../../img/send.png'
 import {HeaderText, NewsText} from '../custom/TextFields'
 import {CustomFormControl, CustomInput, CustomInputLabel, CustomSelect} from '../custom/Selects'
-import {instance} from "../auth/authModule";
+import {apiBaseUrl, instance} from "../auth/authModule";
 import {IEvent} from "../../model/types/IEvent";
 import {useRecoilState} from "recoil";
-import {eventState} from "../../model/State";
+import {eventState, userState} from "../../model/State";
 
 
 interface IProps {
@@ -58,7 +58,7 @@ const PostNews = styled.img`
   right: 35px;
   bottom: 15px;
   height: 20px;
-
+  
   &:hover {
     cursor: pointer;
   }
@@ -67,6 +67,13 @@ const PostNews = styled.img`
 const WriteNews: React.FC<IProps> = ({isPosting}) => {
     let [event, setEvent] = useState(new IEvent())
     const [events, SetEvents] = useRecoilState(eventState)
+    const [user, setUserState] = useRecoilState(userState)
+
+    const getAvatar = () => {
+        if (user.avatarUUID === null) {
+            return avatar
+        } else return `${apiBaseUrl}/upload/${user.avatarUUID}`
+    }
 
     const handleSubmit = () => {
         instance.post("/event", event).then(
@@ -111,7 +118,7 @@ const WriteNews: React.FC<IProps> = ({isPosting}) => {
 
     return (
         <Container isPosting={isPosting}>
-            <Avatar src={avatar}/>
+            <Avatar src={getAvatar()}/>
             <InputsContainer>
                 <HeaderText id='header'
                             label='Напишите заголовок'

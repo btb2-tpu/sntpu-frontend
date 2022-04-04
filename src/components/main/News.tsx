@@ -6,10 +6,11 @@ import WriteNews from "./WriteNews";
 import SideMenu from "./SideMenu";
 
 import catImg from '../../img/catImg.jpg'
-import {instance} from "../auth/authModule";
+import {apiBaseUrl, instance} from "../auth/authModule";
 import {useRecoilState} from "recoil";
-import {eventState} from "../../model/State";
+import {eventState, userState} from "../../model/State";
 import {IEvent} from "../../model/types/IEvent";
+import avatar from "../../img/avatar.png";
 
 
 const Container = styled.div`
@@ -73,12 +74,14 @@ const NewsBlock = styled.div`
 
 const NewsList = styled.div`
   display: flex;
+  box-sizing: border-box;
 `
 
 const News: React.FC = () => {
     const [isPostingNews, setIsPostingNews] = useState(false)
-    const [events, SetEvents] = useRecoilState(eventState)
+    const [events, setEvents] = useRecoilState(eventState)
     const [selected, SetSelected] = useState<IEvent | null>( null)
+    const [user, setUserState] = useRecoilState(userState)
 
     const handleOpen = (data: IEvent) => {
         SetSelected(data)
@@ -88,14 +91,28 @@ const News: React.FC = () => {
         SetSelected(null)
     }
 
+    const getAvatar = () => {
+        if (user.avatarUUID === null) {
+            return avatar
+        } else return `${apiBaseUrl}/upload/${user.avatarUUID}`
+    }
+
     useEffect(() => {
         instance
             .get("/event")
             .then( response => {
-                    SetEvents(response.data)
+                    setEvents(response.data)
                 }
             )
     }, [])
+
+    if (user.description === undefined) {
+        return (
+            <div>
+                Загрузка, ждите
+            </div>
+        )
+    } else
 
     return (
         <>
@@ -109,14 +126,14 @@ const News: React.FC = () => {
                                setIsPostingNews(true)
                            }}
                 >
-                    <img src={catImg}/>
+                    <img src={getAvatar()}/>
                     <span>Хотите предложить новость?</span>
                 </OfferNews>
                 <WriteNews isPosting={isPostingNews}/>
                 <NewsBlock>
                     <span>Новости</span>
                     <NewsList>
-                        { events.slice(0, 3).filter((element) => element.type == "news").map((data) => {
+                        { events.slice(0, 3).filter((element) => element.type === "news").map((data) => {
                             return <NewsCard key={data.uuid} open={() => {handleOpen(data)}} data={data} />
                         }) }
                     </NewsList>
@@ -124,7 +141,7 @@ const News: React.FC = () => {
                 <NewsBlock>
                     <span>Мероприятия</span>
                     <NewsList>
-                        { events.slice(0, 3).filter((element) => element.type == "events").map((data) => {
+                        { events.slice(0, 3).filter((element) => element.type === "events").map((data) => {
                             return <NewsCard key={data.uuid} open={() => {handleOpen(data)}} data={data} />
                         }) }
                     </NewsList>
@@ -132,7 +149,7 @@ const News: React.FC = () => {
                 <NewsBlock>
                     <span>Объявления</span>
                     <NewsList>
-                        { events.slice(0, 3).filter((element) => element.type == "announcements").map((data) => {
+                        { events.slice(0, 3).filter((element) => element.type === "announcements").map((data) => {
                             return <NewsCard key={data.uuid} open={() => {handleOpen(data)}} data={data} />
                         }) }
                     </NewsList>

@@ -35,7 +35,8 @@ const PictureWrapper = styled.div`
 
 const MainContainer = styled.div`
   width: 985px;
-  height: 100%;
+  box-sizing: border-box;
+  padding-bottom: 80px;
   background: white;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
   border-radius: 12px;
@@ -184,13 +185,15 @@ const MyAccount: React.FC = () => {
         } else return `${apiBaseUrl}/upload/${user.avatarUUID}`
     }
 
-    if (user.description === null) {
+    if (user.description === undefined) {
         return (
             <div>
                 Загрузка, ждите
             </div>
         )
-    } else return (
+    } else
+
+   return (
         <>
             <SideMenu/>
             <Container>
