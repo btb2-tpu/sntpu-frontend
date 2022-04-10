@@ -165,7 +165,7 @@ const SideMenu: React.FC = () => {
                     <img src={dashboard}/>
                     <span>Новости</span>
                 </SchemaNewsInstance>
-                <SchemaNewsInstance isNews={false}>
+                <SchemaNewsInstance isNews={false} onClick={() => { navigate("/scene") }}>
                     <span>СК</span>
                     <span>Схема Кампуса</span>
                 </SchemaNewsInstance>

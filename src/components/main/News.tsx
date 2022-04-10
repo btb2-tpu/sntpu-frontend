@@ -87,6 +87,13 @@ const News: React.FC = () => {
         SetSelected(data)
     }
 
+    useEffect(() => {
+        instance.get('/user')
+            .then((response) => {
+                setUserState(response.data)
+            })
+    }, [])
+
     const handleClose = () => {
         SetSelected(null)
     }

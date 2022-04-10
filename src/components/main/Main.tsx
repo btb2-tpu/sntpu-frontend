@@ -10,6 +10,7 @@ import {useRecoilState} from "recoil";
 import {instance} from "../auth/authModule";
 import MyAccount from "./MyAccount";
 import {userState} from "../../model/State";
+import Scene from "../scene/Scene";
 
 
 const Container = styled.div`
@@ -32,13 +33,6 @@ const ContentContainer = styled.div`
 const Main: React.FC = () => {
     const [user, setUserState] = useRecoilState(userState)
 
-    useEffect(() => {
-        instance.get('/user')
-            .then((response) => {
-                setUserState(response.data)
-            })
-    }, [])
-
     return (
         <Container>
             <ContentContainer>
@@ -52,6 +46,10 @@ const Main: React.FC = () => {
                     <Route
                         path="myAccount"
                         element={<PrivateRoute component={MyAccount}/>}
+                    />
+                    <Route
+                        path={"scene"}
+                        element={<PrivateRoute component={Scene} />}
                     />
                 </Routes>
             </ContentContainer>

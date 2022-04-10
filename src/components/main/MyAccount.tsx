@@ -171,6 +171,13 @@ const MyAccount: React.FC = () => {
     const [openDialog, setOpenDialog] = useState(false)
     const [user, setUser] = useRecoilState(userState)
 
+    useEffect(() => {
+        instance.get('/user')
+            .then((response) => {
+                setUser(response.data)
+            })
+    }, [])
+
     const handleOpen = () => {
         setOpenDialog(true)
     }
